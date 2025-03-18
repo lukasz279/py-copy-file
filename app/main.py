@@ -1,15 +1,20 @@
+import os
+
+
 def copy_file(command: str) -> None:
-    command_parts = command.split()
-    if len(command_parts) != 3 or command_parts[0] != "cp":
+    commands = command.split()
+    if len(commands) != 3 or commands[0] != "cp":
         return
-    _, source_file, destination_file = command_parts
-    if source_file == destination_file:
+    from_file_name = commands[1]
+    if_file_name = commands[2]
+
+    if from_file_name == if_file_name:
         return
-    try:
-        with (open(source_file, 'r') as file_in,
-              open(destination_file, 'w') as file_out):
-            file_out.write(file_in.read())
-    except FileNotFoundError:
-        print(f"Error: {source_file} not found.")
-    except IOError as e:
-        print(f"Error occurred during file copy: {e}")
+    if not os.path.exists(from_file_name):
+        return
+
+    with open(from_file_name, "r") as file_in:
+        contains = file_in.read()
+
+    with open(if_file_name, "w") as file_out:
+        file_out.write(contains)
